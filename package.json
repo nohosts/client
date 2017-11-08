@@ -1,0 +1,34 @@
+{
+  "name": "Nohost",
+  "version": "1.0.0",
+  "description": "nohost的PC客户端，帮助PC用户设置nohost环境，安装后打开即可接入nohost",
+  "main": "lib/main.js",
+  "scripts": {
+    "lint": "eslint *.js lib",
+    "lintfix": "eslint --fix *.js lib",
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://git.code.oa.com/imweb/nohost-client.git"
+  },
+  "keywords": [
+    "imweb",
+    "nohost",
+    "whistle"
+  ],
+  "author": "avenwu <avenwu@tencent.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-eslint": "^7.1.1",
+    "electron": "1.7.9",
+    "eslint": "^3.10.2",
+    "eslint-config-imweb": "^0.2.0"
+  },
+  "engines": {
+    "node": ">= 7.6.0"
+  },
+  "dependencies": {
+    "lan-settings": "0.0.1"
+  }
+}
