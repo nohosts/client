@@ -29,6 +29,7 @@
     "node": ">= 7.6.0"
   },
   "dependencies": {
-    "lan-settings": "0.0.1"
+    "lan-settings": "0.0.1",
+    "whistle": "^1.5.20"
   }
 }
