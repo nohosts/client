@@ -33,6 +33,9 @@
         cursor: pointer;
         outline: none;
       }
+      main button[disabled] {
+        background-color: #ccc!important;
+      }
       main button:hover {
         background-color: #f3803b;
       }
@@ -65,8 +68,16 @@
       const $ = (id) => {
         return document.getElementById(id);
       };
+
+      const isDisabled = () => {
+        return $('main').className === 'disabled' || $('switchProxy').disabled;
+      };
+
       let settingsWin;
       const openSettings = () => {
+        if (isDisabled()) {
+          return;
+        }
         if (!settingsWin || settingsWin.closed) {
           settingsWin = window.open('http://local.wproxy.org/', null, 'width=1080');
         }
@@ -74,55 +85,90 @@
       };
       let selectEnvWin;
       const openSelectEnv = () => {
+        if (isDisabled()) {
+          return;
+        }
         if (!selectEnvWin || selectEnvWin.closed) {
-          selectEnvWin = window.open('http://imweb.nohost.pro/select.html');
+          selectEnvWin = window.open('http://imweb.nohost.pro:8080/select.html');
         }
         selectEnvWin.focus();
       };
       const openHelp = () => {
         shell.openExternal('http://git.code.oa.com/imweb/nohost-client');
       };
+      const disableAllWindows = () => {
+
+      };
     </script>
   </head>
   <body>
     <main id="main" class="disabled">
-      <button id="switchProxy" onclick="switchProxy(event)">启用</button>
+      <button id="switchProxy" onclick="switchProxy()">启用</button>
       <div class="action-bar">
         <a class="action-btn" href="javascript:;" onclick="openSettings()">设置</a>
         <a class="action-btn" href="javascript:;" onclick="openSelectEnv()">选择环境</a>
-        <a href="javascript:;" onclick="openHelp()" >
-          帮助
-        </a>
+        <a href="javascript:;" onclick="openHelp()">帮助</a>
       </div>
     </main>
     <script>
-      const nohost = require('./lib');
+      const { enableProxy, disableProxy } = require('./lib');
+
       const switchProxy = () => {
         const btn = $('switchProxy');
-        const main = $('main');
-        if (main.className === 'enabled') {
-          main.className = 'disabled';
-          btn.innerHTML = '启用';
-        } else {
-          main.className = 'enabled';
-          btn.innerHTML = '关闭';
+        if (btn.disabled) {
+          return;
         }
+        const main = $('main');
+        btn.disabled = true;
+        if (main.className === 'enabled') {
+          return disableProxy().then(() => {
+            btn.disabled = false;
+            main.className = 'disabled';
+            btn.innerHTML = '启用';
+          }).catch((e) => {
+            btn.disabled = false;
+            alert('操作失败，请稍后重试。');
+            throw e;
+          });
+        }
+
+        return enableProxy().then(() => {
+            btn.disabled = false;
+            main.className = 'enabled';
+            btn.innerHTML = '关闭';
+          }).catch((e) => {
+            btn.disabled = false;
+            alert('操作失败，请稍后重试。');
+            throw e;
+          });
       };
-      nohost.init();
-    </script>
-    <script>
+
+      const closeWindow = () => window.close();
+
+      const init = async () => {
+        try {
+          await switchProxy();
+        } catch (e) {
+          if (confirm('启动失败，是否重试？')) {
+            return await init();
+          }
+        }
         window.onbeforeunload = (e) => {
-          if (!pending || $('main').className === 'disabled') {
+          if (!$('switchProxy').disabled && $('main').className === 'disabled') {
             return;
           }
           process.nextTick(() => {
             if (confirm('退出后将不能使用Nohost，确定退出？')) {
-              switchProxy();
-              window.close();
+              switchProxy().then(closeWindow, closeWindow);
             }
           });
           return '';
         };
+      };
+      init();
+    </script>
+    <script>
+
       </script>
   </body>
 </html>

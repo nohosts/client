@@ -29,6 +29,7 @@
     "node": ">= 7.6.0"
   },
   "dependencies": {
+    "@tencent/whistle.nohostproxy": "*",
     "lan-settings": "0.0.1",
     "whistle": "^1.5.20"
   }
