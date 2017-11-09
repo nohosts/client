@@ -96,8 +96,13 @@
       const openHelp = () => {
         shell.openExternal('http://git.code.oa.com/imweb/nohost-client');
       };
-      const disableAllWindows = () => {
-
+      const closeAllChildWindow = () => {
+        if (settingsWin && !settingsWin.closed) {
+          settingsWin.close();
+        }
+        if (selectEnvWin && !selectEnvWin.closed) {
+          selectEnvWin.close();
+        }
       };
     </script>
   </head>
@@ -125,6 +130,7 @@
             btn.disabled = false;
             main.className = 'disabled';
             btn.innerHTML = '启用';
+            closeAllChildWindow();
           }).catch((e) => {
             btn.disabled = false;
             alert('操作失败，请稍后重试。');
