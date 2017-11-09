@@ -1,13 +1,13 @@
 {
-  "name": "Nohost",
+  "name": "nohost",
   "version": "1.0.0",
   "description": "nohost的PC客户端，帮助PC用户设置nohost环境，安装后打开即可接入nohost",
-  "main": "lib/main.js",
+  "main": "main.js",
   "scripts": {
-    "lint": "eslint *.js lib",
-    "lintfix": "eslint --fix *.js lib",
-    "start": "electron .",
-    "package": "electron-packager ./bin --win --out nohost --arch=x64 --version 1.0.0 --overwrite --ignore=node_modules"
+    "lint": "eslint app/*.js app/lib",
+    "lintfix": "eslint --fix app/*.js app/lib",
+    "start": "electron ./app",
+    "package": "electron-packager ./app --win --out ./bin --arch=x64 --overwrite --icon=./app/assets/logo.ico --version-string.CompanyName=nohost --version-string.ProductName=nohost"
   },
   "repository": {
     "type": "git",
@@ -26,13 +26,5 @@
     "electron-packager": "^9.1.0",
     "eslint": "^3.10.2",
     "eslint-config-imweb": "^0.2.0"
-  },
-  "engines": {
-    "node": ">= 7.6.0"
-  },
-  "dependencies": {
-    "@tencent/whistle.nohostproxy": "*",
-    "lan-settings": "0.0.1",
-    "whistle": "^1.5.20"
   }
 }
