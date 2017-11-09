@@ -116,14 +116,14 @@
       </div>
     </main>
     <script>
-      const { enableProxy, disableProxy } = require('./lib');
+      const { enableProxy, disableProxy, proxyEnable } = require('./lib');
+      const btn = $('switchProxy');
+      const main = $('main');
 
       const switchProxy = () => {
-        const btn = $('switchProxy');
         if (btn.disabled) {
           return;
         }
-        const main = $('main');
         btn.disabled = true;
         if (main.className === 'enabled') {
           return disableProxy().then(() => {
@@ -149,6 +149,13 @@
           });
       };
 
+      const ensureProxyEnable = async () => {
+        if (!btn.disabled && main.className === 'enabled' && !(await proxyEnable())) {
+          main.className = 'disabled';
+          await switchProxy();
+        }
+        setTimeout(ensureProxyEnable, 10000);
+      };
       const closeWindow = () => window.close();
 
       const init = async () => {
@@ -159,8 +166,9 @@
             return await init();
           }
         }
+        ensureProxyEnable();
         window.onbeforeunload = (e) => {
-          if (!$('switchProxy').disabled && $('main').className === 'disabled') {
+          if (!btn.disabled && main.className === 'disabled') {
             return;
           }
           process.nextTick(() => {
