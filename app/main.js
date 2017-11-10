@@ -25,10 +25,8 @@ const handleSquirrel = (uninstall) => {
   const target = path.basename(process.execPath);
   const name = uninstall ? '--removeShortcut' : '--createShortcut';
   const child = cp.spawn(updateDotExe, [name, target], { detached: true });
+  child.on('error', () => {});
   child.on('close', () => app.quit());
-  if (uninstall) {
-    app.quit();
-  }
 };
 
 const handleStartupEvent = function () {
