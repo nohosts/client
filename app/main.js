@@ -29,7 +29,7 @@ const handleSquirrel = (uninstall) => {
   child.on('close', () => app.quit());
 };
 
-const handleStartupEvent = function () {
+const handleStartupEvent = () => {
   if (process.platform !== 'win32') {
     return false;
   }
@@ -48,18 +48,29 @@ const handleStartupEvent = function () {
   }
 };
 
+const makeInstanceCallback = () => {
+  if (!win) return;
+  if (win.isMinimized()) win.restore();
+  win.focus()
+};
 
 const init = () => {
+  // Quit if app is not the only instance
+  const isSecondInstance = app.makeSingleInstance(makeInstanceCallback);
+  if (isSecondInstance) {
+    app.quit();
+  }
+
   if (handleStartupEvent()) {
     return;
   }
+
   app.on('ready', initWindow);
   app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
       app.quit();
     }
   });
-
   app.on('activate', () => {
     if (win === null) {
       initWindow();
