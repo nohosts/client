@@ -1,8 +1,9 @@
-const { app } = require('electron');
+const { app, Tray } = require('electron');
 const path = require('path');
 const url = require('url');
 const cp = require('child_process');
 const { createWindow } = require('./lib/util');
+
 
 let win;
 const initWindow = () => {
@@ -17,7 +18,25 @@ const initWindow = () => {
     height: 150,
     minWidth: 260,
     minHeight: 150,
+    resizable: false,
   });
+  win.on('closed', () => win = null);
+};
+
+let tray;
+const initTray = () => {
+  tray = new Tray(path.join(__dirname, './assets/logo.png'));
+  tray.setToolTip('Nohost 运行中...');
+  tray.on('click', () => {
+    win.show();
+    win.restore();
+    win.focus();
+  });
+  // Todo: Support context menu
+  // const contextMenu = Menu.buildFromTemplate([
+  //   {label: 'Item1', type: 'radio'}
+  // ])
+  // tray.setContextMenu(contextMenu)
 };
 
 const handleSquirrel = (uninstall) => {
@@ -25,7 +44,8 @@ const handleSquirrel = (uninstall) => {
   const target = path.basename(process.execPath);
   const name = uninstall ? '--removeShortcut' : '--createShortcut';
   const child = cp.spawn(updateDotExe, [name, target], { detached: true });
-  child.on('error', () => {});
+  child.on('error', () => {
+  });
   child.on('close', () => app.quit());
 };
 
@@ -49,9 +69,9 @@ const handleStartupEvent = () => {
 };
 
 const makeInstanceCallback = () => {
-  if (!win) return;
-  if (win.isMinimized()) win.restore();
-  win.focus()
+  if (!win) { return; }
+  if (win.isMinimized()) { win.restore(); }
+  win.focus();
 };
 
 const init = () => {
@@ -65,7 +85,10 @@ const init = () => {
     return;
   }
 
-  app.on('ready', initWindow);
+  app.on('ready', () => {
+    initWindow();
+    initTray();
+  });
   app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
       app.quit();

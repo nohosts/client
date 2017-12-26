@@ -2,6 +2,8 @@ const http = require('http');
 const { BrowserWindow } = require('electron');
 const path = require('path');
 
+const isDev = process.env.NODE_ENV === 'development';
+
 let curPort = 55001;
 
 const checkPort = (port) => {
@@ -34,15 +36,18 @@ exports.getPort = () => {
 };
 
 exports.createWindow = (options) => {
-  let win = new BrowserWindow(Object.assign({
+  const win = new BrowserWindow(Object.assign({
     title: 'Nohost',
     autoHideMenuBar: true,
     icon: path.join(__dirname, '../assets/logo.png'),
   }, options));
-
   win.setMenu(null);
   win.loadURL(options.url);
-  win.on('closed', () => win = null);
-
+  if (isDev) {
+    win.openDevTools();
+  }
+  win.on('minimize', () => {
+    win.hide();
+  });
   return win;
 };
