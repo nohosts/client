@@ -16,21 +16,21 @@ function getProcessArgv(key) {
 const hostPlatform = require('os').platform();
 const version = require('./app/package.json').version;
 
-const platform = getProcessArgv('platform');
-const arch = getProcessArgv('arch');
 const appName = 'nohost';
 const mirrorUrl = 'http://tnpm.oa.com/mirrors/electron/';
 
 
-function run() {
+async function run() {
   const command = hostPlatform === 'win32' ?
     'set NODE_ENV=development&& electron ./app' :
     'NODE_ENV=development electron ./app';
   console.log(command);
-  execSync(command);
+  await execSync(command);
 }
 
-function pack() {
+async function pack() {
+  const platform = getProcessArgv('platform');
+  const arch = getProcessArgv('arch');
   const iconPath = platform === 'darwin' ?
     './app/assets/logo.icns' : './app/assets/logo.ico';
   const ignores = [
@@ -45,10 +45,12 @@ function pack() {
   --overwrite --icon=${iconPath} --overwrite --rebuild\
   ${ignores.map(file => ` --ignore=${file}`).join('')}`;
   console.log(command);
-  execSync(command);
+  await execSync(command);
 }
 
 async function generateInstaller() {
+  const platform = getProcessArgv('platform');
+  const arch = getProcessArgv('arch');
   const appDirectory = path.join(__dirname, `./bin/${appName}-${platform}-${arch}`);
   const outputDirectory = path.join(__dirname, `./bin/release/v${version}/${platform}-${arch}`);
   await electronInstaller.createWindowsInstaller({
@@ -64,10 +66,10 @@ async function generateInstaller() {
 }
 
 
-gulp.task('default', run);
-gulp.task('pack', pack);
+gulp.task('default', async () => await run());
+gulp.task('pack', async () => await pack());
 gulp.task('generateInstaller', async () => await generateInstaller());
 gulp.task('release', async () => {
-  pack();
+  await pack();
   await generateInstaller();
 });
