@@ -18,7 +18,6 @@ const initWindow = () => {
     height: 150,
     minWidth: 260,
     minHeight: 150,
-    resizable: false,
   });
   win.on('closed', () => win = null);
 };
