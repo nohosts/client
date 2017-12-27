@@ -10,8 +10,8 @@
   "author": "avenwu <avenwu@tencent.com>",
   "license": "MIT",
   "dependencies": {
-    "@tencent/whistle.txpac": "*",
     "@tencent/whistle.nohostenv": "*",
+    "@tencent/whistle.txpac": "*",
     "lan-settings": "^0.1.0",
     "whistle": "^1.8.0"
   }
