@@ -1,15 +1,26 @@
 const path = require('path');
+const assert = require('assert');
 const gulp = require('gulp');
-const execSync = require('child_process').execSync;
+const exec = require('child_process').exec;
 const electronInstaller = require('electron-winstaller');
 
 
 function getProcessArgv(key) {
   const index = process.argv.indexOf(`--${key}`);
-  if (index > -1) {
-    return process.argv[index + 1];
-  }
-  throw new Error(`Argument ${key} is required!`);
+  assert(index > -1, `Missing required argument ${key}`);
+  return process.argv[index + 1];
+}
+
+function execCommand(command) {
+  return new Promise((resolve, reject) => {
+    exec(command, (error, stdout) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(stdout);
+      }
+    });
+  });
 }
 
 
@@ -24,8 +35,7 @@ async function run() {
   const command = hostPlatform === 'win32' ?
     'set NODE_ENV=development&& electron ./app' :
     'NODE_ENV=development electron ./app';
-  console.log(command);
-  await execSync(command);
+  await execCommand(command);
 }
 
 async function pack() {
@@ -44,16 +54,15 @@ async function pack() {
   --platform=${platform} --arch=${arch} --download.mirror=${mirrorUrl}\
   --overwrite --icon=${iconPath} --overwrite --rebuild\
   ${ignores.map(file => ` --ignore=${file}`).join('')}`;
-  console.log(command);
-  await execSync(command);
+  await execCommand(command);
 }
 
-async function generateInstaller() {
+function generateInstaller() {
   const platform = getProcessArgv('platform');
   const arch = getProcessArgv('arch');
   const appDirectory = path.join(__dirname, `./bin/${appName}-${platform}-${arch}`);
   const outputDirectory = path.join(__dirname, `./bin/release/v${version}/${platform}-${arch}`);
-  await electronInstaller.createWindowsInstaller({
+  return electronInstaller.createWindowsInstaller({
     appDirectory,
     outputDirectory,
     version,

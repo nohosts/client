@@ -63,7 +63,7 @@
     </script>
     <script>
       const lan = require('lan-settings');
-      const { shell } = require('electron');
+      const { shell, ipcRenderer } = require('electron');
 
       const $ = (id) => {
         return document.getElementById(id);
@@ -83,6 +83,8 @@
         }
         settingsWin.focus();
       };
+      ipcRenderer.on('openSettings', openSettings);
+
       let selectEnvWin;
       const openSelectEnv = () => {
         if (isDisabled()) {
@@ -93,9 +95,13 @@
         }
         selectEnvWin.focus();
       };
+      ipcRenderer.on('openSelectEnv', openSelectEnv);
+
       const openHelp = () => {
         shell.openExternal('http://git.code.oa.com/imweb/nohost-client');
       };
+      ipcRenderer.on('openHelp', openHelp);
+
       const closeAllChildWindow = () => {
         if (settingsWin && !settingsWin.closed) {
           settingsWin.close();
@@ -131,6 +137,7 @@
             main.className = 'disabled';
             btn.innerHTML = '启用';
             closeAllChildWindow();
+            ipcRenderer.send('switchProxy', false)
           }).catch((e) => {
             btn.disabled = false;
             alert('操作失败，请稍后重试。');
@@ -142,12 +149,14 @@
             btn.disabled = false;
             main.className = 'enabled';
             btn.innerHTML = '关闭';
-          }).catch((e) => {
+            ipcRenderer.send('switchProxy', true)
+        }).catch((e) => {
             btn.disabled = false;
             alert('操作失败，请稍后重试。');
             throw e;
           });
       };
+      ipcRenderer.on('switchProxy', switchProxy);
 
       const ensureProxyEnable = async () => {
         if (!btn.disabled && main.className === 'enabled' && !(await proxyEnable())) {
