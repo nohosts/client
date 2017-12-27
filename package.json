@@ -6,8 +6,12 @@
   "scripts": {
     "lint": "eslint app/*.js app/lib",
     "lintfix": "eslint --fix app/*.js app/lib",
-    "start": "electron ./app",
-    "package": "electron-packager ./app --win --out ./bin --arch=x64 --overwrite --icon=./app/assets/logo.ico --version-string.CompanyName=nohost --version-string.ProductName=nohost"
+    "start": "gulp",
+    "pack:win32": "gulp pack --platform win32 --arch ia32",
+    "pack:win64": "gulp pack --platform win32 --arch x64",
+    "pack:mac": "gulp pack --platform darwin --arch x64",
+    "release:win32": "gulp release --platform win32 --arch ia32",
+    "release:win64": "gulp release --platform win32 --arch x64"
   },
   "repository": {
     "type": "git",
@@ -24,7 +28,12 @@
     "babel-eslint": "^7.1.1",
     "electron": "1.7.9",
     "electron-packager": "^9.1.0",
+    "electron-winstaller": "^2.6.3",
     "eslint": "^3.10.2",
-    "eslint-config-imweb": "^0.2.0"
+    "eslint-config-imweb": "^0.2.4",
+    "gulp": "^3.9.1"
+  },
+  "dependencies": {
+    "eslint-plugin-react": "^7.5.1"
   }
 }
