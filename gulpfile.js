@@ -24,7 +24,6 @@ async function run() {
   const command = hostPlatform === 'win32' ?
     'set NODE_ENV=development&& electron ./app' :
     'NODE_ENV=development electron ./app';
-  console.log(command);
   await execSync(command);
 }
 
@@ -44,7 +43,6 @@ async function pack() {
   --platform=${platform} --arch=${arch} --download.mirror=${mirrorUrl}\
   --overwrite --icon=${iconPath} --overwrite --rebuild\
   ${ignores.map(file => ` --ignore=${file}`).join('')}`;
-  console.log(command);
   await execSync(command);
 }
 
