@@ -7,7 +7,7 @@
     "lint": "eslint *.js app/*.js app/lib",
     "lintfix": "eslint --fix *.js app/*.js app/lib",
     "start": "gulp",
-    "pack:win": "pack:win32",
+    "pack:win": "npm run pack:win64",
     "pack:win32": "electron-builder --win --ia32",
     "pack:win64": "electron-builder --win --x64",
     "pack:mac": "electron-builder --mac"
