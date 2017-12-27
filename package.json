@@ -34,7 +34,6 @@
     "gulp": "^3.9.1"
   },
   "dependencies": {
-    "7zip-bin-win": "^2.1.1",
     "electron-builder": "^19.49.2"
   }
 }

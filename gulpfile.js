@@ -39,7 +39,7 @@ async function run() {
 async function pack() {
   const command = [
     'electron-builder',
-    '--config ../electron-builder.json',
+    '--config ./electron-builder.json',
   ];
 
   const platform = getProcessArgv('platform');
