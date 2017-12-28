@@ -1,4 +1,4 @@
-const { app, Tray } = require('electron');
+const { app, Tray, Menu, ipcMain } = require('electron');
 const path = require('path');
 const url = require('url');
 const cp = require('child_process');
@@ -23,19 +23,53 @@ const initWindow = () => {
 };
 
 let tray;
+const trayContextMenu = [
+  {
+    label: 'Nohost',
+    type: 'checkbox',
+    checked: true,
+    sublabel: '启用服务',
+    click: () => win.webContents.send('switchProxy'),
+  },
+  {
+    type: 'separator',
+  },
+  {
+    label: '选择环境',
+    type: 'normal',
+    click: () => win.webContents.send('openSelectEnv'),
+  },
+  {
+    label: '设置',
+    type: 'normal',
+    click: () => win.webContents.send('openSettings'),
+  },
+  {
+    label: '帮助',
+    type: 'normal',
+    click: () => win.webContents.send('openHelp'),
+  },
+  {
+    label: '退出',
+    type: 'normal',
+    click: () => app.quit(),
+  },
+];
 const initTray = () => {
   tray = new Tray(path.join(__dirname, './assets/logo.png'));
-  tray.setToolTip('Nohost 运行中...');
+  tray.setToolTip('Nohost 服务运行中...');
   tray.on('click', () => {
     win.show();
     win.restore();
     win.focus();
   });
-  // Todo: Support context menu
-  // const contextMenu = Menu.buildFromTemplate([
-  //   {label: 'Item1', type: 'radio'}
-  // ])
-  // tray.setContextMenu(contextMenu)
+  const contextMenu = Menu.buildFromTemplate(trayContextMenu);
+  tray.setContextMenu(contextMenu);
+  ipcMain.on('switchProxy', (event, isActivated) => {
+    contextMenu.items[0].checked = isActivated;
+    contextMenu.items.slice(2, 4).forEach(item => item.enabled = isActivated);
+    tray.setToolTip(`Nohost服务${isActivated ? '运行中...' : '未运行'}`);
+  });
 };
 
 const handleSquirrel = (uninstall) => {
@@ -68,8 +102,12 @@ const handleStartupEvent = () => {
 };
 
 const makeInstanceCallback = () => {
-  if (!win) { return; }
-  if (win.isMinimized()) { win.restore(); }
+  if (!win) {
+    return;
+  }
+  if (win.isMinimized()) {
+    win.restore();
+  }
   win.focus();
 };
 
