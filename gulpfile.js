@@ -1,8 +1,8 @@
 const path = require('path');
+const fs = require('fs');
 const assert = require('assert');
 const gulp = require('gulp');
 const exec = require('child_process').exec;
-const electronInstaller = require('electron-winstaller');
 
 
 function getProcessArgv(key) {
@@ -28,7 +28,6 @@ const hostPlatform = require('os').platform();
 const version = require('./app/package.json').version;
 
 
-
 async function run() {
   const command = hostPlatform === 'win32' ?
     'set NODE_ENV=development&& electron ./app' :
@@ -36,7 +35,7 @@ async function run() {
   await execCommand(command);
 }
 
-async function pack() {
+async function build() {
   const command = [
     'electron-builder',
     '--config ./electron-builder.json',
@@ -58,9 +57,15 @@ async function pack() {
   }
 
   await execCommand(command.join(' '));
+  const exePath = `./bin/Nohost Setup ${version}.exe`;
+  const releasePath = './bin/release';
+  if (!fs.existsSync(releasePath)) {
+    fs.mkdirSync(releasePath);
+  }
+  fs.renameSync(exePath, path.join(releasePath, `Nohost-${arch}-${version}.exe`));
+  fs.unlinkSync(`${exePath}.blockmap`);
 }
 
 
 gulp.task('default', async () => await run());
-gulp.task('pack', async () => await pack());
-
+gulp.task('build', async () => await build());
