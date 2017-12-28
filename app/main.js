@@ -3,6 +3,11 @@ const path = require('path');
 const url = require('url');
 const cp = require('child_process');
 const { createWindow } = require('./lib/util');
+const { override } = require('./lib/child-process');
+
+
+// Override functions in child-process module
+override(cp);
 
 
 let win;
