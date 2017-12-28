@@ -4,8 +4,8 @@
   "description": "nohost的PC客户端，帮助PC用户设置nohost环境，安装后打开即可接入nohost",
   "main": "main.js",
   "scripts": {
-    "lint": "eslint app/*.js app/lib gulpfile.js",
-    "lintfix": "eslint --fix app/*.js app/lib gulpfile.js",
+    "lint": "eslint app/*.js app/lib",
+    "lintfix": "eslint --fix app/*.js app/lib",
     "start": "gulp",
     "build:win32": "gulp build --platform win32 --arch ia32",
     "build:win64": "gulp build --platform win32 --arch x64",
