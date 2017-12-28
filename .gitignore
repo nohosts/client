@@ -38,7 +38,7 @@ jspm_packages
 
 # test
 /test
-/bin/nohost-*
+/dist/win-*
 
 
 .DS_Store

@@ -3,6 +3,7 @@ const lan = require('lan-settings');
 const startWhistle = require('whistle');
 const { getPort } = require('./util');
 
+process.env.path = `${path.join(__dirname, '../bin/x64')};${process.env.path}`;
 let defaultSettingsPromise;
 let defaultSettings;
 let enablePromise;
