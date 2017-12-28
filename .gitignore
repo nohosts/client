@@ -39,6 +39,7 @@ jspm_packages
 # test
 /test
 /dist/win-*
+*.blockmap
 
 
 .DS_Store
