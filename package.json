@@ -7,9 +7,10 @@
     "lint": "eslint *.js app/*.js app/lib",
     "lintfix": "eslint --fix *.js app/*.js app/lib",
     "start": "gulp",
-    "build:win32": "gulp build --platform win32 --arch ia32",
-    "build:win64": "gulp build --platform win32 --arch x64",
-    "build:mac": "gulp build --platform darwin --arch x64"
+    "pack:win": "npm run pack:win64",
+    "pack:win32": "electron-builder --win --ia32",
+    "pack:win64": "electron-builder --win --x64",
+    "pack:mac": "electron-builder --mac"
   },
   "repository": {
     "type": "git",
