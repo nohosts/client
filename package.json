@@ -4,8 +4,8 @@
   "description": "nohost的PC客户端，帮助PC用户设置nohost环境，安装后打开即可接入nohost",
   "main": "main.js",
   "scripts": {
-    "lint": "eslint app/*.js app/lib",
-    "lintfix": "eslint --fix app/*.js app/lib",
+    "lint": "eslint *.js app/*.js app/lib",
+    "lintfix": "eslint --fix *.js app/*.js app/lib",
     "start": "gulp",
     "build:win32": "gulp build --platform win32 --arch ia32",
     "build:win64": "gulp build --platform win32 --arch x64",
@@ -29,5 +29,24 @@
     "eslint": "^3.10.2",
     "eslint-config-imweb": "^0.2.4",
     "gulp": "^3.9.1"
+  },
+  "build": {
+    "appId": "io.imweb.nohost",
+    "asar": false,
+    "artifactName": "${productName}-v${version}-${os}-${arch}.${ext}",
+    "copyright": "IMWeb",
+    "compression": "normal",
+    "extends": null,
+    "mac": {
+      "icon": "assets/logo.icns"
+    },
+    "win": {
+      "icon": "assets/logo.ico"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": true,
+      "runAfterFinish": true
+    }
   }
 }
