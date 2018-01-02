@@ -1,6 +1,6 @@
 {
   "name": "nohost",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "nohost的PC客户端，帮助PC用户设置nohost环境，安装后打开即可接入nohost",
   "main": "main.js",
   "repository": {
