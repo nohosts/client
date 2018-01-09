@@ -189,9 +189,18 @@
             return;
           }
           process.nextTick(() => {
-            if (confirm('退出后将不能使用Nohost，确定退出？')) {
-              switchProxy().then(closeWindow, closeWindow);
-            }
+            require('electron').remote.require('electron').dialog.showMessageBox({
+                type: 'question',
+                message: '退出后将不能使用Nohost，确定退出？',
+                buttons: ['取消', '退出', '最小化'],
+                defaultId: 2
+              }, response => {
+                switch (response) {
+                  case 0: e.preventDefault(); break;
+                  case 1: switchProxy().then(closeWindow, closeWindow); break;
+                  case 2: require('electron').remote.app.hide(); break;
+                }
+              });
           });
           return '';
         };

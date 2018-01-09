@@ -67,6 +67,8 @@ const initTray = () => {
   const contextMenu = Menu.buildFromTemplate(trayContextMenu);
   tray.setContextMenu(contextMenu);
   ipcMain.on('switchProxy', (event, isActivated) => {
+    tray.setImage(path.join(__dirname,
+      `./assets/${platform === 'darwin' ? 'tray' : 'logo'}${!isActivated ? '-gray' : ''}.png`));
     contextMenu.items[0].checked = isActivated;
     contextMenu.items.slice(2, 4).forEach(item => item.enabled = isActivated);
     tray.setToolTip(`Nohost服务${isActivated ? '运行中...' : '未运行'}`);
