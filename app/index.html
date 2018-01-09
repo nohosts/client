@@ -62,6 +62,8 @@
       window.onbeforeunload = () => '';
     </script>
     <script>
+      window.addEventListener('error', console.error)
+
       const lan = require('lan-settings');
       const { shell, ipcRenderer } = require('electron');
 
@@ -73,6 +75,7 @@
         return $('main').className === 'disabled' || $('switchProxy').disabled;
       };
 
+      // 注册 Handlers
       let settingsWin;
       const openSettings = () => {
         if (isDisabled()) {
@@ -166,7 +169,11 @@
         }
         setTimeout(ensureProxyEnable, 10000);
       };
-      const closeWindow = () => window.close();
+      const closeWindow = () => {
+        window.close();
+        if (require('electron').remote.require('os').platform() === 'darwin')
+          require('electron').remote.app.quit();
+      };
 
       const init = async () => {
         try {
@@ -191,8 +198,5 @@
       };
       init();
     </script>
-    <script>
-
-      </script>
   </body>
 </html>

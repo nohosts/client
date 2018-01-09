@@ -3,6 +3,7 @@ const path = require('path');
 const url = require('url');
 const cp = require('child_process');
 const { createWindow } = require('./lib/util');
+const platform = require('os').platform();
 
 
 let win;
@@ -56,7 +57,7 @@ const trayContextMenu = [
   },
 ];
 const initTray = () => {
-  tray = new Tray(path.join(__dirname, './assets/logo.png'));
+  tray = new Tray(path.join(__dirname, `./assets/${platform === 'darwin' ? 'tray' : 'logo'}.png`));
   tray.setToolTip('Nohost 服务运行中...');
   tray.on('click', () => {
     win.show();
@@ -83,7 +84,7 @@ const handleSquirrel = (uninstall) => {
 };
 
 const handleStartupEvent = () => {
-  if (process.platform !== 'win32') {
+  if (platform !== 'win32') {
     return false;
   }
   /* eslint-disable default-case */
@@ -127,8 +128,10 @@ const init = () => {
     initTray();
   });
   app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
+    if (platform !== 'darwin') {
       app.quit();
+    } else {
+      app.hide();
     }
   });
   app.on('activate', () => {

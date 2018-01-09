@@ -12,7 +12,7 @@
   "dependencies": {
     "@tencent/whistle.nohostenv": "*",
     "@tencent/whistle.txpac": "*",
-    "lan-settings": "^2.0.0-beta",
+    "lan-settings": "^1.0.0-beta",
     "whistle": "^1.8.3"
   }
 }

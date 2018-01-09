@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint *.js app/*.js app/lib",
     "lintfix": "eslint --fix *.js app/*.js app/lib",
-    "start": "gulp",
+    "start": "NODE_ENV=development electron ./app",
     "pack:win": "npm run pack:win64",
     "pack:win32": "electron-builder --win --ia32",
     "pack:win64": "electron-builder --win --x64",

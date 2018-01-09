@@ -1,5 +1,5 @@
 const path = require('path');
-const lan = require('lan-settings');
+const lan = require('/Users/huqingyang/Desktop/lan-settings');
 const startWhistle = require('whistle');
 const { getPort } = require('./util');
 
@@ -45,7 +45,8 @@ const enableProxy = async (port) => {
     settings.autoDetect = false;
     settings.bypassLocal = false;
     settings.bypass = '';
-    lan.setSettings(settings, err => (err ? reject(err) : resolve()));
+    const callback = err => (err ? reject(err) : resolve());
+    lan.setSettings(defaultSettings, callback);
   });
   return enablePromise;
 };
@@ -131,4 +132,3 @@ exports.enableProxy = () => {
 };
 
 exports.disableProxy = disableProxy;
-
