@@ -26,11 +26,22 @@ const initWindow = () => {
 let tray;
 const trayContextMenu = [
   {
-    label: 'Nohost',
+    label: '启用',
     type: 'checkbox',
     checked: true,
-    sublabel: '启用服务',
-    click: () => win.webContents.send('switchProxy'),
+    click: () => {
+      if (win === null) {
+        initWindow();
+        win.hide();
+      }
+      win.webContents.send('switchProxy');
+    },
+  },
+  {
+    label: '显示',
+    click: () => {
+      win.show();
+    },
   },
   {
     type: 'separator',
@@ -70,6 +81,7 @@ const initTray = () => {
     tray.setImage(path.join(__dirname,
       `./assets/${platform === 'darwin' ? 'tray' : 'logo'}${!isActivated ? '-gray' : ''}.png`));
     contextMenu.items[0].checked = isActivated;
+    contextMenu.items[0].label = isActivated ? '启用' : '未启用';
     contextMenu.items.slice(2, 4).forEach(item => item.enabled = isActivated);
     tray.setToolTip(`Nohost服务${isActivated ? '运行中...' : '未运行'}`);
   });
