@@ -126,6 +126,17 @@ const makeInstanceCallback = () => {
   win.focus();
 };
 
+const initShortCut = () => {
+  const closeKey = platform === 'win32' ?
+    'CommandOrControl+F4' : 'CommandOrControl+W';
+  globalShortcut.register(closeKey, () => {
+    const currentWindow = BrowserWindow.getFocusedWindow();
+    if (currentWindow) {
+      currentWindow.close();
+    }
+  });
+};
+
 const init = () => {
   // Quit if app is not the only instance
   const isSecondInstance = app.makeSingleInstance(makeInstanceCallback);
@@ -140,12 +151,7 @@ const init = () => {
   app.on('ready', () => {
     initWindow();
     initTray();
-    globalShortcut.register('CommandOrControl+W', () => {
-      const currentWindow = BrowserWindow.getFocusedWindow();
-      if (currentWindow) {
-        currentWindow.close();
-      }
-    });
+    initShortCut();
   });
   app.on('window-all-closed', () => {
     if (platform !== 'darwin') {
