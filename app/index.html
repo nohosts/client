@@ -62,6 +62,8 @@
       window.onbeforeunload = () => '';
     </script>
     <script>
+      window.addEventListener('error', console.error)
+
       const lan = require('lan-settings');
       const { shell, ipcRenderer } = require('electron');
 
@@ -73,6 +75,7 @@
         return $('main').className === 'disabled' || $('switchProxy').disabled;
       };
 
+      // 注册 Handlers
       let settingsWin;
       const openSettings = () => {
         if (isDisabled()) {
@@ -125,6 +128,7 @@
       const { enableProxy, disableProxy, proxyEnable } = require('./lib');
       const btn = $('switchProxy');
       const main = $('main');
+      const platform = require('electron').remote.require('os').platform();
 
       const switchProxy = () => {
         if (btn.disabled) {
@@ -158,41 +162,66 @@
       };
       ipcRenderer.on('switchProxy', switchProxy);
 
-      const ensureProxyEnable = async () => {
-        if (!btn.disabled && main.className === 'enabled' && !(await proxyEnable())) {
+      const ensureProxyEnable = async (isInit) => {
+        if (isInit && !btn.disabled && main.className === 'enabled' && !(await proxyEnable())) {
           main.className = 'disabled';
           btn.innerHTML = '启用';
           await switchProxy();
         }
-        setTimeout(ensureProxyEnable, 10000);
+        setTimeout(ensureProxyEnable.bind(null, false), 10000);
       };
-      const closeWindow = () => window.close();
+      const closeWindow = () => {
+        window.close();
+        if (platform === 'darwin')
+          require('electron').remote.app.quit();
+      };
 
       const init = async () => {
         try {
-          await switchProxy();
+          await enableProxy();
+          btn.disabled = false;
+          main.className = 'enabled';
+          btn.innerHTML = '关闭';
+          ipcRenderer.send('switchProxy', true);
         } catch (e) {
           if (confirm('启动失败，是否重试？')) {
             return await init();
           }
         }
-        ensureProxyEnable();
+        await ensureProxyEnable(true);
         window.onbeforeunload = (e) => {
           if (!btn.disabled && main.className === 'disabled') {
             return;
           }
           process.nextTick(() => {
-            if (confirm('退出后将不能使用Nohost，确定退出？')) {
-              switchProxy().then(closeWindow, closeWindow);
+            if (platform === 'darwin') {
+              require('electron').remote.app.show();
             }
+            require('electron').remote.app.focus();
+            require('electron').remote.require('electron').dialog.showMessageBox({
+                type: 'question',
+                message: '退出后将不能使用Nohost，确定退出？',
+                buttons: ['取消', '退出', '最小化'],
+                defaultId: 2
+              }, response => {
+                switch (response) {
+                  case 0: e.preventDefault(); break;
+                  case 1: switchProxy().then(closeWindow, closeWindow); break;
+                  case 2: {
+                    if (platform === 'darwin') {
+                      require('electron').remote.app.hide();
+                    } else if (platform === 'win32') {
+                      require('electron').remote.getCurrentWindow().hide();
+                    }
+                    break;
+                  }
+                }
+              });
           });
           return '';
         };
       };
       init();
     </script>
-    <script>
-
-      </script>
   </body>
 </html>

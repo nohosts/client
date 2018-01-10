@@ -22,7 +22,7 @@ const getDefaultSettings = () => {
         defaultSettingsPromise = null;
         return reject(err);
       }
-      resolve(settings);
+      resolve(Object.assign({}, settings));
     });
   });
   return defaultSettingsPromise;
@@ -45,7 +45,8 @@ const enableProxy = async (port) => {
     settings.autoDetect = false;
     settings.bypassLocal = false;
     settings.bypass = '';
-    lan.setSettings(settings, err => (err ? reject(err) : resolve()));
+    const callback = err => (err ? reject(err) : resolve());
+    lan.setSettings(settings, callback);
   });
   return enablePromise;
 };
@@ -56,14 +57,7 @@ const disableProxy = async () => {
   }
   await enablePromise;
   enablePromise = null;
-  disablePromise = new Promise((resolve, reject) => {
-    const callback = err => (err ? reject(err) : resolve());
-    if (defaultSettings) {
-      lan.setSettings(defaultSettings, callback);
-    } else {
-      lan.reset(callback);
-    }
-  });
+  disablePromise = lan.reset();
   return disablePromise;
 };
 
@@ -131,4 +125,3 @@ exports.enableProxy = () => {
 };
 
 exports.disableProxy = disableProxy;
-

@@ -1,8 +1,9 @@
-const { app, Tray, Menu, ipcMain } = require('electron');
+const { app, Tray, Menu, MenuItem, ipcMain, globalShortcut, BrowserWindow } = require('electron');
 const path = require('path');
 const url = require('url');
 const cp = require('child_process');
 const { createWindow } = require('./lib/util');
+const platform = require('os').platform();
 
 
 let win;
@@ -25,11 +26,22 @@ const initWindow = () => {
 let tray;
 const trayContextMenu = [
   {
-    label: 'Nohost',
+    label: '启用',
     type: 'checkbox',
     checked: true,
-    sublabel: '启用服务',
-    click: () => win.webContents.send('switchProxy'),
+    click: () => {
+      if (win === null) {
+        initWindow();
+        win.hide();
+      }
+      win.webContents.send('switchProxy');
+    },
+  },
+  {
+    label: '显示',
+    click: () => {
+      win.show();
+    },
   },
   {
     type: 'separator',
@@ -56,7 +68,7 @@ const trayContextMenu = [
   },
 ];
 const initTray = () => {
-  tray = new Tray(path.join(__dirname, './assets/logo.png'));
+  tray = new Tray(path.join(__dirname, `./assets/${platform === 'darwin' ? 'tray' : 'logo'}.png`));
   tray.setToolTip('Nohost 服务运行中...');
   tray.on('click', () => {
     win.show();
@@ -66,7 +78,10 @@ const initTray = () => {
   const contextMenu = Menu.buildFromTemplate(trayContextMenu);
   tray.setContextMenu(contextMenu);
   ipcMain.on('switchProxy', (event, isActivated) => {
+    tray.setImage(path.join(__dirname,
+      `./assets/${platform === 'darwin' ? 'tray' : 'logo'}${!isActivated ? '-gray' : ''}.png`));
     contextMenu.items[0].checked = isActivated;
+    contextMenu.items[0].label = isActivated ? '启用' : '未启用';
     contextMenu.items.slice(2, 4).forEach(item => item.enabled = isActivated);
     tray.setToolTip(`Nohost服务${isActivated ? '运行中...' : '未运行'}`);
   });
@@ -83,7 +98,7 @@ const handleSquirrel = (uninstall) => {
 };
 
 const handleStartupEvent = () => {
-  if (process.platform !== 'win32') {
+  if (platform !== 'win32') {
     return false;
   }
   /* eslint-disable default-case */
@@ -111,6 +126,35 @@ const makeInstanceCallback = () => {
   win.focus();
 };
 
+const initShortCut = () => {
+  const closeKey = platform === 'win32' ?
+    'CommandOrControl+F4' : 'CommandOrControl+W';
+  const template = [{
+    role: 'Window',
+    submenu: [
+      {
+        label: 'Close',
+        accelerator: closeKey,
+        click: () => {
+          const currentWindow = BrowserWindow.getFocusedWindow();
+          if (currentWindow) {
+            currentWindow.close();
+          }
+        },
+      },
+      {
+        label: 'Quit',
+        accelerator: 'CommandOrControl+Q',
+        click: () => {
+          app.quit();
+        },
+      },
+    ],
+  }];
+  Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+  win.setAutoHideMenuBar(true);
+};
+
 const init = () => {
   // Quit if app is not the only instance
   const isSecondInstance = app.makeSingleInstance(makeInstanceCallback);
@@ -125,10 +169,13 @@ const init = () => {
   app.on('ready', () => {
     initWindow();
     initTray();
+    initShortCut();
   });
   app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
+    if (platform !== 'darwin') {
       app.quit();
+    } else {
+      app.hide();
     }
   });
   app.on('activate', () => {
