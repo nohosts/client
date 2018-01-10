@@ -13,7 +13,9 @@
     "@tencent/whistle.nohostenv": "*",
     "@tencent/whistle.txpac": "*",
     "lan-settings": "^1.0.0-beta1",
-    "regedit": "^2.2.7",
     "whistle": "^1.8.3"
+  },
+  "optionalDependencies": {
+    "regedit": "^2.2.7"
   }
 }
