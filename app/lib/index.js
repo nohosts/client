@@ -6,11 +6,11 @@ const os = require('os');
 
 
 const platform = os.platform();
-const nodePath = path.join(__dirname, `../bin/${platform}`);
+const NODE_PATH = path.join(__dirname, `../bin/${platform}`);
 if (platform === 'darwin') {
-  process.env.PATH = `${nodePath}:${process.env.PATH}`;
+  process.env.PATH = `${NODE_PATH}:${process.env.PATH}`;
 } else if (platform === 'win32') {
-  process.env.Path = `${nodePath};${process.env.Path}`;
+  process.env.PATH = `${NODE_PATH};${process.env.PATH}`;
 }
 
 
