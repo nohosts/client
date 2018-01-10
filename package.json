@@ -8,10 +8,8 @@
     "lintfix": "eslint --fix *.js app/*.js app/lib",
     "start": "NODE_ENV=development electron ./app",
     "start:win": "set NODE_ENV=development&& electron ./app",
-    "pack:win": "npm run pack:win64",
-    "pack:win32": "electron-builder --win --ia32",
-    "pack:win64": "electron-builder --win --x64",
-    "pack:mac": "electron-builder target=DMG --mac"
+    "pack:win": "electron-builder --win --x64",
+    "pack:mac": "electron-builder --mac "
   },
   "repository": {
     "type": "git",
@@ -39,10 +37,12 @@
     "compression": "normal",
     "extends": null,
     "mac": {
-      "icon": "app/assets/logo.icns"
+      "icon": "app/assets/logo.icns",
+      "target": "dmg"
     },
     "win": {
-      "icon": "app/assets/logo.ico"
+      "icon": "app/assets/logo.ico",
+      "target": "exe"
     },
     "nsis": {
       "oneClick": true,

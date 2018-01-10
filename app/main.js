@@ -1,4 +1,4 @@
-const { app, Tray, Menu, MenuItem, ipcMain, globalShortcut, BrowserWindow } = require('electron');
+const { app, Tray, Menu, ipcMain, BrowserWindow } = require('electron');
 const path = require('path');
 const url = require('url');
 const cp = require('child_process');
