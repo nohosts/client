@@ -2,8 +2,18 @@ const path = require('path');
 const lan = require('lan-settings');
 const startWhistle = require('whistle');
 const { getPort } = require('./util');
+const os = require('os');
 
-process.env.path = `${path.join(__dirname, '../bin/x64')};${process.env.path}`;
+
+const platform = os.platform();
+const nodePath = path.join(__dirname, `../bin/${platform}`);
+if (platform === 'darwin') {
+  process.env.PATH = `${nodePath}:${process.env.PATH}`;
+} else if (platform === 'win32') {
+  process.env.Path = `${nodePath};${process.env.Path}`;
+}
+
+
 let defaultSettingsPromise;
 let defaultSettings;
 let enablePromise;

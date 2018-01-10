@@ -1,4 +1,4 @@
-const { app, Tray, Menu, MenuItem, ipcMain, globalShortcut, BrowserWindow } = require('electron');
+const { app, Tray, Menu, ipcMain, BrowserWindow } = require('electron');
 const path = require('path');
 const url = require('url');
 const cp = require('child_process');
@@ -128,7 +128,7 @@ const makeInstanceCallback = () => {
 
 const initShortCut = () => {
   const closeKey = platform === 'win32' ?
-    'CommandOrControl+F4' : 'CommandOrControl+W';
+    'Alt+F4' : 'CommandOrControl+W';
   const template = [{
     role: 'Window',
     submenu: [

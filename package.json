@@ -1,6 +1,6 @@
 {
   "name": "nohost",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "nohost的PC客户端，帮助PC用户设置nohost环境，安装后打开即可接入nohost",
   "main": "main.js",
   "scripts": {
@@ -8,10 +8,8 @@
     "lintfix": "eslint --fix *.js app/*.js app/lib",
     "start": "NODE_ENV=development electron ./app",
     "start:win": "set NODE_ENV=development&& electron ./app",
-    "pack:win": "npm run pack:win64",
-    "pack:win32": "electron-builder --win --ia32",
-    "pack:win64": "electron-builder --win --x64",
-    "pack:mac": "electron-builder target=DMG --mac"
+    "pack:win": "electron-builder --win --x64",
+    "pack:mac": "electron-builder --mac "
   },
   "repository": {
     "type": "git",
@@ -29,8 +27,7 @@
     "electron": "1.7.9",
     "electron-builder": "^19.49.2",
     "eslint": "^3.10.2",
-    "eslint-config-imweb": "^0.2.4",
-    "gulp": "^3.9.1"
+    "eslint-config-imweb": "^0.2.4"
   },
   "build": {
     "appId": "io.imweb.nohost",
@@ -40,10 +37,12 @@
     "compression": "normal",
     "extends": null,
     "mac": {
-      "icon": "app/assets/logo.icns"
+      "icon": "app/assets/logo.icns",
+      "target": "dmg"
     },
     "win": {
-      "icon": "app/assets/logo.ico"
+      "icon": "app/assets/logo.ico",
+      "target": "exe"
     },
     "nsis": {
       "oneClick": true,
