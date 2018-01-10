@@ -1,5 +1,5 @@
 const path = require('path');
-const lan = require('lan-settings');
+const lan = require('../lan-settings');
 const startWhistle = require('whistle');
 const { getPort } = require('./util');
 
