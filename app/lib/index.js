@@ -3,7 +3,6 @@ const lan = require('lan-settings');
 const startWhistle = require('whistle');
 const { getPort } = require('./util');
 const os = require('os');
-const remote = require('electron').remote;
 
 
 const platform = os.platform();
