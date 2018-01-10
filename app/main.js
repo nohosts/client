@@ -1,4 +1,4 @@
-const { app, Tray, Menu, ipcMain } = require('electron');
+const { app, Tray, Menu, ipcMain, globalShortcut, BrowserWindow } = require('electron');
 const path = require('path');
 const url = require('url');
 const cp = require('child_process');
@@ -140,6 +140,12 @@ const init = () => {
   app.on('ready', () => {
     initWindow();
     initTray();
+    globalShortcut.register('CommandOrControl+W', () => {
+      const currentWindow = BrowserWindow.getFocusedWindow();
+      if (currentWindow) {
+        currentWindow.close();
+      }
+    });
   });
   app.on('window-all-closed', () => {
     if (platform !== 'darwin') {
@@ -152,6 +158,9 @@ const init = () => {
     if (win === null) {
       initWindow();
     }
+  });
+  app.on('will-quit', () => {
+    globalShortcut.unregisterAll();
   });
 };
 

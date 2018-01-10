@@ -39,15 +39,18 @@
     "compression": "normal",
     "extends": null,
     "mac": {
-      "icon": "assets/logo.icns"
+      "icon": "app/assets/logo.icns"
     },
     "win": {
-      "icon": "assets/logo.ico"
+      "icon": "app/assets/logo.ico"
     },
     "nsis": {
       "oneClick": true,
       "perMachine": true,
       "runAfterFinish": true
     }
+  },
+  "dependencies": {
+    "7zip-bin-mac": "^1.0.1"
   }
 }
