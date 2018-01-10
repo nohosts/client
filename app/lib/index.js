@@ -9,7 +9,6 @@ const remote = require('electron').remote;
 const platform = os.platform();
 const nodePath = path.join(__dirname, `../bin/${platform}`);
 process.env.PATH = `${nodePath}:${process.env.PATH}`;
-remote.process.env.PATH = `${nodePath}:${remote.process.env.PATH}`;
 
 
 let defaultSettingsPromise;
