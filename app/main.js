@@ -1,4 +1,4 @@
-const { app, Tray, Menu, ipcMain, globalShortcut, BrowserWindow } = require('electron');
+const { app, Tray, Menu, MenuItem, ipcMain, globalShortcut, BrowserWindow } = require('electron');
 const path = require('path');
 const url = require('url');
 const cp = require('child_process');
@@ -129,12 +129,30 @@ const makeInstanceCallback = () => {
 const initShortCut = () => {
   const closeKey = platform === 'win32' ?
     'CommandOrControl+F4' : 'CommandOrControl+W';
-  globalShortcut.register(closeKey, () => {
-    const currentWindow = BrowserWindow.getFocusedWindow();
-    if (currentWindow) {
-      currentWindow.close();
-    }
-  });
+  const template = [{
+    role: 'Window',
+    submenu: [
+      {
+        label: 'Close',
+        accelerator: closeKey,
+        click: () => {
+          const currentWindow = BrowserWindow.getFocusedWindow();
+          if (currentWindow) {
+            currentWindow.close();
+          }
+        },
+      },
+      {
+        label: 'Quit',
+        accelerator: 'CommandOrControl+Q',
+        click: () => {
+          app.quit();
+        },
+      },
+    ],
+  }];
+  Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+  win.setAutoHideMenuBar(true);
 };
 
 const init = () => {
@@ -164,9 +182,6 @@ const init = () => {
     if (win === null) {
       initWindow();
     }
-  });
-  app.on('will-quit', () => {
-    globalShortcut.unregisterAll();
   });
 };
 

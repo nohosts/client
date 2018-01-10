@@ -11,7 +11,7 @@
     "pack:win": "npm run pack:win64",
     "pack:win32": "electron-builder --win --ia32",
     "pack:win64": "electron-builder --win --x64",
-    "pack:mac": "electron-builder --mac"
+    "pack:mac": "electron-builder target=DMG --mac"
   },
   "repository": {
     "type": "git",
