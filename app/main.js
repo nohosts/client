@@ -128,7 +128,7 @@ const makeInstanceCallback = () => {
 
 const initShortCut = () => {
   const closeKey = platform === 'win32' ?
-    'CommandOrControl+F4' : 'CommandOrControl+W';
+    'Alt+F4' : 'CommandOrControl+W';
   const template = [{
     role: 'Window',
     submenu: [
