@@ -125,7 +125,7 @@
       const { enableProxy, disableProxy, proxyEnable } = require('./lib');
       const btn = $('switchProxy');
       const main = $('main');
-      const platform = remote.require('os').platform();
+      const platform = require('os').platform();
 
       const switchProxy = () => {
         if (btn.disabled) {
