@@ -8,8 +8,8 @@
     "lintfix": "eslint --fix *.js app/*.js app/lib",
     "start": "NODE_ENV=development electron ./app",
     "start:win": "set NODE_ENV=development&& electron ./app",
-    "pack:win": "node ./copyBin.js && electron-builder --win --x64",
-    "pack:mac": "node ./copyBin.js && electron-builder --mac "
+    "pack:win": "node ./beforePack.js && electron-builder --win --x64",
+    "pack:mac": "node ./beforePack.js && electron-builder --mac "
   },
   "repository": {
     "type": "git",
