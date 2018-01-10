@@ -7,7 +7,11 @@ const os = require('os');
 
 const platform = os.platform();
 const nodePath = path.join(__dirname, `../bin/${platform}`);
-process.env.PATH = `${nodePath}:${process.env.PATH}`;
+if (platform === 'darwin') {
+  process.env.PATH = `${nodePath}:${process.env.PATH}`;
+} else if (platform === 'win32') {
+  process.env.Path = `${nodePath};${process.env.Path}`;
+}
 
 
 let defaultSettingsPromise;
