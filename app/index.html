@@ -62,10 +62,7 @@
       window.onbeforeunload = () => '';
     </script>
     <script>
-      window.addEventListener('error', console.error)
-
-      const lan = require('lan-settings');
-      const { shell, ipcRenderer } = require('electron');
+      const { shell, ipcRenderer, remote } = require('electron');
 
       const $ = (id) => {
         return document.getElementById(id);
@@ -128,7 +125,7 @@
       const { enableProxy, disableProxy, proxyEnable } = require('./lib');
       const btn = $('switchProxy');
       const main = $('main');
-      const platform = require('electron').remote.require('os').platform();
+      const platform = remote.require('os').platform();
 
       const switchProxy = () => {
         if (btn.disabled) {
@@ -162,18 +159,18 @@
       };
       ipcRenderer.on('switchProxy', switchProxy);
 
-      const ensureProxyEnable = async (isInit) => {
-        if (isInit && !btn.disabled && main.className === 'enabled' && !(await proxyEnable())) {
+      const ensureProxyEnable = async () => {
+        if (!btn.disabled && main.className === 'enabled' && !(await proxyEnable())) {
           main.className = 'disabled';
           btn.innerHTML = '启用';
           await switchProxy();
         }
-        setTimeout(ensureProxyEnable.bind(null, false), 10000);
+        setTimeout(ensureProxyEnable, 10000);
       };
       const closeWindow = () => {
         window.close();
         if (platform === 'darwin')
-          require('electron').remote.app.quit();
+          remote.app.quit();
       };
 
       const init = async () => {
@@ -188,17 +185,17 @@
             return await init();
           }
         }
-        await ensureProxyEnable(true);
+        await ensureProxyEnable();
         window.onbeforeunload = (e) => {
           if (!btn.disabled && main.className === 'disabled') {
             return;
           }
           process.nextTick(() => {
             if (platform === 'darwin') {
-              require('electron').remote.app.show();
+              remote.app.show();
             }
-            require('electron').remote.app.focus();
-            require('electron').remote.require('electron').dialog.showMessageBox({
+            remote.app.focus();
+            remote.require('electron').dialog.showMessageBox({
                 type: 'question',
                 message: '退出后将不能使用Nohost，确定退出？',
                 buttons: ['取消', '退出', '最小化'],
@@ -209,9 +206,9 @@
                   case 1: switchProxy().then(closeWindow, closeWindow); break;
                   case 2: {
                     if (platform === 'darwin') {
-                      require('electron').remote.app.hide();
+                      remote.app.hide();
                     } else if (platform === 'win32') {
-                      require('electron').remote.getCurrentWindow().hide();
+                      remote.getCurrentWindow().hide();
                     }
                     break;
                   }
