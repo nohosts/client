@@ -1,6 +1,6 @@
 {
   "name": "nohost",
-  "version": "1.0.2",
+  "version": "1.1.2",
   "description": "nohost的PC客户端，帮助PC用户设置nohost环境，安装后打开即可接入nohost",
   "main": "main.js",
   "repository": {
@@ -10,10 +10,10 @@
   "author": "avenwu <avenwu@tencent.com>",
   "license": "MIT",
   "dependencies": {
-    "@tencent/whistle.nohostenv": "*",
-    "@tencent/whistle.txpac": "*",
+    "@tencent/whistle.nohostenv": "^2.3.0",
+    "@tencent/whistle.txpac": "^2.1.1",
     "lan-settings": "^1.0.0-beta3",
-    "whistle": "^1.8.3"
+    "whistle": "^1.13.10"
   },
   "optionalDependencies": {
     "regedit": "^2.2.7"
