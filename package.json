@@ -1,6 +1,6 @@
 {
   "name": "nohost",
-  "version": "1.1.2",
+  "version": "1.1.0",
   "description": "nohost的PC客户端，帮助PC用户设置nohost环境，安装后打开即可接入nohost",
   "main": "main.js",
   "scripts": {
@@ -31,7 +31,7 @@
   },
   "build": {
     "appId": "io.imweb.nohost",
-    "asar": false,
+
     "artifactName": "${productName}-v${version}-${os}-${arch}.${ext}",
     "copyright": "IMWeb",
     "compression": "normal",
@@ -42,11 +42,13 @@
     },
     "win": {
       "icon": "app/assets/logo.ico",
-      "target": "exe"
+      "target": "nsis"
     },
     "nsis": {
       "oneClick": true,
       "perMachine": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
       "runAfterFinish": true
     }
   }

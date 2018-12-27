@@ -46,3 +46,4 @@ jspm_packages
 .idea
 /package-lock.json
 app/bin
+dist/
