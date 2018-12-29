@@ -31,7 +31,7 @@
   },
   "build": {
     "appId": "io.imweb.nohost",
-
+    "asar": false,
     "artifactName": "${productName}-v${version}-${os}-${arch}.${ext}",
     "copyright": "IMWeb",
     "compression": "normal",
@@ -47,8 +47,6 @@
     "nsis": {
       "oneClick": true,
       "perMachine": true,
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true,
       "runAfterFinish": true
     }
   }
