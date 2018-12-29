@@ -79,7 +79,7 @@ const setup = async () => {
   await new Promise((resolve) => {
     startWhistle({
       port,
-      mode: 'pureProxy',
+      mode: 'pureProxy|multiEnv',
       storage: 'nohost-client',
       pluginPaths: [path.join(__dirname, '../node_modules')],
     }, resolve);
