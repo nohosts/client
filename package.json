@@ -1,0 +1,53 @@
+{
+  "name": "nohost",
+  "version": "0.0.1",
+  "description": "nohost的PC客户端，帮助PC用户设置nohost环境，安装后打开即可接入nohost",
+  "main": "main.js",
+  "scripts": {
+    "lint": "eslint *.js app/*.js app/lib",
+    "lintfix": "eslint --fix *.js app/*.js app/lib",
+    "start": "cross-env NODE_ENV=development electron ./app",
+    "pack:win": "node ./beforePack.js && electron-builder --win --x64",
+    "pack:mac": "node ./beforePack.js && electron-builder --mac "
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://git.code.oa.com/nohost/client.git"
+  },
+  "keywords": [
+    "imweb",
+    "nohost",
+    "whistle"
+  ],
+  "author": "imweb",
+  "license": "MIT",
+  "devDependencies": {
+    "cross-env": "^6.0.3",
+    "babel-eslint": "^7.1.1",
+    "electron": "1.7.9",
+    "electron-builder": "^19.49.2",
+    "eslint": "^3.10.2",
+    "eslint-config-imweb": "^0.2.4"
+  },
+  "build": {
+    "appId": "nohost.client",
+    "asar": false,
+    "artifactName": "${productName}-v${version}-${os}-${arch}.${ext}",
+    "copyright": "IMWeb",
+    "compression": "normal",
+    "extends": null,
+    "mac": {
+      "icon": "app/assets/logo.icns",
+      "target": "dmg"
+    },
+    "win": {
+      "icon": "app/assets/logo.ico",
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": true,
+      "runAfterFinish": true
+    }
+  }
+}
