@@ -24,7 +24,7 @@
   "devDependencies": {
     "cross-env": "^6.0.3",
     "babel-eslint": "^7.1.1",
-    "electron": "1.7.9",
+    "electron": "7.1.2",
     "electron-builder": "^19.49.2",
     "eslint": "^3.10.2",
     "eslint-config-imweb": "^0.2.4"
