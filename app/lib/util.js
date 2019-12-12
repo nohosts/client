@@ -40,8 +40,11 @@ exports.createWindow = (options) => {
     title: 'Nohost',
     autoHideMenuBar: true,
     icon: path.join(__dirname, '../assets/logo.png'),
+    webPreferences:{
+      nodeIntegration: true
+    }
   }, options));
-  win.setMenu(null);
+  win.removeMenu();
   win.loadURL(options.url);
   if (isDev) {
     win.openDevTools();
