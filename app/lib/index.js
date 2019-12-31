@@ -1,15 +1,8 @@
-const path = require('path');
+const path = require('electron').remote.require('path');
 const lan = require('lan-settings');
 const startWhistle = require('whistle');
 const { getPort } = require('./util');
-const platform = require('os').platform();
-
-
-const nodePath = path.join(__dirname, '../bin');
-process.env.PATH = platform === 'win32' ?
-  `${nodePath};${process.env.PATH}` :
-  `${nodePath}:${process.env.PATH}`;
-
+const platform = require('electron').remote.require('os').platform();
 
 let defaultSettingsPromise;
 let defaultSettings;

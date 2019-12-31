@@ -157,10 +157,15 @@ const initShortCut = () => {
 
 const init = () => {
   // Quit if app is not the only instance
-  const isSecondInstance = app.makeSingleInstance(makeInstanceCallback);
-  if (isSecondInstance) {
-    app.quit();
+  const gotTheLock = app.requestSingleInstanceLock()
+  if (!gotTheLock) {
+    app.quit()
+  } else {
+    app.on('second-instance', (event, commandLine, workingDirectory) => {
+      makeInstanceCallback(commandLine, workingDirectory);
+    })
   }
+
 
   if (handleStartupEvent()) {
     return;

@@ -1,19 +1,17 @@
 {
   "name": "nohost",
-  "version": "1.1.0",
+  "version": "0.0.1",
   "description": "nohost的PC客户端，帮助PC用户设置nohost环境，安装后打开即可接入nohost",
   "main": "main.js",
   "repository": {
     "type": "git",
-    "url": "http://git.code.oa.com/imweb/nohost-client.git"
+    "url": "http://git.code.oa.com/nohost/client.git"
   },
-  "author": "avenwu <avenwu@tencent.com>",
+  "author": "imweb",
   "license": "MIT",
   "dependencies": {
-    "@tencent/whistle.nohostenv": "^2.3.0",
-    "@tencent/whistle.txpac": "^2.1.1",
     "lan-settings": "^1.0.0-beta4",
-    "whistle": "^1.13.10"
+    "whistle": "^2.4.0"
   },
   "optionalDependencies": {
     "regedit": "^3.0.2"

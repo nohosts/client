@@ -91,14 +91,14 @@
           return;
         }
         if (!selectEnvWin || selectEnvWin.closed) {
-          selectEnvWin = window.open('http://imweb.nohost.pro:8080/select.html');
+          selectEnvWin = window.open('http://local.wproxy.org/whistle.nohost-client/', null, 'width=1200,height=800');
         }
         selectEnvWin.focus();
       };
       ipcRenderer.on('openSelectEnv', openSelectEnv);
 
       const openHelp = () => {
-        shell.openExternal('http://git.code.oa.com/imweb/nohost-client');
+        shell.openExternal('https://nohosts.github.io/nohost/');
       };
       ipcRenderer.on('openHelp', openHelp);
 
@@ -125,7 +125,7 @@
       const { enableProxy, disableProxy, proxyEnable } = require('./lib');
       const btn = $('switchProxy');
       const main = $('main');
-      const platform = require('os').platform();
+      const platform = require('electron').remote.require('os').platform();
 
       const switchProxy = () => {
         if (btn.disabled) {
