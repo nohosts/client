@@ -1,6 +1,9 @@
 const http = require('http');
 const { BrowserWindow } = require('electron');
 const path = require('path');
+const os = require('os');
+const cp = require('child_process');
+const sudo = require('sudo-prompt');
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -40,9 +43,9 @@ exports.createWindow = (options) => {
     title: 'Nohost',
     autoHideMenuBar: true,
     icon: path.join(__dirname, '../assets/logo.png'),
-    webPreferences:{
-      nodeIntegration: true
-    }
+    webPreferences: {
+      nodeIntegration: true,
+    },
   }, options));
   win.removeMenu();
   win.loadURL(options.url);
@@ -53,4 +56,37 @@ exports.createWindow = (options) => {
     win.hide();
   });
   return win;
+};
+
+const systemType = os.type();
+exports.isMacOs = systemType === 'Darwin';
+
+const sudoOptions = {
+  name: 'Nohost',
+};
+
+exports.exec = (command, isSudo) => {
+  return new Promise((resolve, reject) => {
+    if (isSudo) {
+      sudo.exec(command, sudoOptions, (error, stdout, stderr) => {
+        if (error) {
+          reject(error);
+        } else if (stderr) {
+          reject(stderr);
+        } else {
+          resolve(stdout);
+        }
+      });
+    } else {
+      cp.exec(command, (error, stdout, stderr) => {
+        if (error) {
+          reject(error);
+        } else if (stderr) {
+          reject(stderr);
+        } else {
+          resolve(stdout);
+        }
+      });
+    }
+  });
 };

@@ -31,10 +31,11 @@ pc客户端使用了 electron 技术，它允许使用Node.js（作为后端）�
 
 # 开发
 
-1. 在app/package.json 添加whistle插件 进 dependencies，插件如何开发请看[访问 nohost 的 whistle 插件](https://github.com/nohosts/whistle.nohost-imweb)
+1. 在app/package.json 添加whistle插件 进 dependencies(是在client/app目录进行install，不是在client这个根目录)，插件如何开发请看[访问 nohost 的 whistle 插件](https://github.com/nohosts/whistle.nohost-imweb)
+![插件位置](./docs/plugin-address.png)
 
 2. 修改app/index.html 中**选择环境**的链接 
-![选择环境链接](https://user-images.githubusercontent.com/4689952/69938189-9a935780-1517-11ea-8630-552113232819.png)
+![选择环境链接](./docs/nohost-address.png)
 
 
 # 安装依赖

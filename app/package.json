@@ -10,7 +10,10 @@
   "author": "imweb",
   "license": "MIT",
   "dependencies": {
+    "fix-path": "^3.0.0",
+    "fs-extra-promise": "^1.0.1",
     "lan-settings": "^1.0.0-beta4",
+    "sudo-prompt": "^9.2.1",
     "whistle": "^2.4.0"
   },
   "optionalDependencies": {
