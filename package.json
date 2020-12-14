@@ -25,7 +25,7 @@
     "babel-eslint": "^7.1.1",
     "cross-env": "^6.0.3",
     "electron": "^7.1.4",
-    "electron-builder": "^21.2.0",
+    "electron-builder": "^22.2.0",
     "eslint": "^6.7.2",
     "eslint-config-imweb": "^0.2.4"
   },
