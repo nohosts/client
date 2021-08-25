@@ -1,42 +1,50 @@
-const { app, Tray, Menu, ipcMain, BrowserWindow } = require('electron');
+const { app, Tray, Menu, ipcMain, BrowserWindow, dialog } = require('electron');
 const path = require('path');
-const url = require('url');
+const fs = require('fs');
 const cp = require('child_process');
 const { createWindow } = require('./lib/util');
+const { enableProxy, disableProxy } = require('./lib');
 const platform = require('os').platform();
 
+const js = fs.readFileSync(path.join(__dirname, './lib/inject.js')) + '';
 
 let win;
 const initWindow = () => {
-  const pageUrl = url.format({
-    pathname: path.join(__dirname, 'index.html'),
-    protocol: 'file:',
-    slashes: true,
-  });
   win = createWindow({
-    url: pageUrl,
-    width: 260,
-    height: 150,
-    minWidth: 260,
-    minHeight: 150,
+    width: 960,
+    height: 580,
+    minWidth: 960,
+    minHeight: 580,
   });
   win.on('closed', () => win = null);
+  enableProxy()
+    .then((port) => {
+      win.loadURL(`http://127.0.0.1:${port}/whistle.proxy-settings/`);
+      win.webContents.on('did-finish-load', () => {
+        win.webContents.executeJavaScript(js);
+      });
+    })
+    .catch((e) => {
+      dialog.showErrorBox('开启代理失败', e);
+      console.log(e);
+    });
 };
 
 let tray;
 const trayContextMenu = [
-  {
-    label: '启用',
-    type: 'checkbox',
-    checked: true,
-    click: () => {
-      if (win === null) {
-        initWindow();
-        win.hide();
-      }
-      win.webContents.send('switchProxy');
-    },
-  },
+  // {
+  //   label: '启用',
+  //   type: 'checkbox',
+  //   checked: true,
+  //   click: (item) => {
+  //     if (win === null) {
+  //       initWindow();
+  //       win.hide();
+  //     }
+  //     !item.checked ? enableProxy() : disableProxy();
+  //     item.checked = !item.checked;
+  //   },
+  // },
   {
     label: '显示',
     click: () => {
@@ -45,21 +53,6 @@ const trayContextMenu = [
   },
   {
     type: 'separator',
-  },
-  {
-    label: '选择环境',
-    type: 'normal',
-    click: () => win.webContents.send('openSelectEnv'),
-  },
-  {
-    label: '设置',
-    type: 'normal',
-    click: () => win.webContents.send('openSettings'),
-  },
-  {
-    label: '帮助',
-    type: 'normal',
-    click: () => win.webContents.send('openHelp'),
   },
   {
     label: '退出',
@@ -84,6 +77,7 @@ const initTray = () => {
     contextMenu.items[0].label = isActivated ? '启用' : '未启用';
     contextMenu.items.slice(2, 4).forEach(item => item.enabled = isActivated);
     tray.setToolTip(`Nohost服务${isActivated ? '运行中...' : '未运行'}`);
+    isActivated ? enableProxy() : disableProxy();
   });
 };
 

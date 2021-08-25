@@ -42,13 +42,15 @@ exports.createWindow = (options) => {
   const win = new BrowserWindow(Object.assign({
     title: 'Nohost',
     autoHideMenuBar: true,
-    icon: path.join(__dirname, '../assets/logo.png'),
+    icon: path.join(__dirname, '../assets/nohost.png'),
     webPreferences: {
       nodeIntegration: true,
     },
   }, options));
   win.removeMenu();
-  win.loadURL(options.url);
+  if (options.url) {
+    win.loadURL(options.url);
+  }
   if (isDev) {
     win.openDevTools();
   }

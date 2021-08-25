@@ -37,11 +37,11 @@
     "compression": "normal",
     "extends": null,
     "mac": {
-      "icon": "app/assets/logo.icns",
+      "icon": "app/assets/nohost.png",
       "target": "dmg"
     },
     "win": {
-      "icon": "app/assets/logo.ico",
+      "icon": "app/assets/nohost.png",
       "target": "nsis"
     },
     "nsis": {

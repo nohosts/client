@@ -1,9 +1,8 @@
-const path = require('electron').remote.require('path');
+const path = require('path');
 const fs = require('fs-extra-promise');
 const lan = require('lan-settings');
 const startWhistle = require('whistle');
 const { getPort, isMacOs, exec } = require('./util');
-const platform = require('electron').remote.require('os').platform();
 require('./polyfill');
 
 const PROXY_CONF_HELPER_PATH = path.join(__dirname, '../assets/proxy_conf_helper');
@@ -68,7 +67,7 @@ const enableMacProxy = async (port) => {
   disablePromise = null;
   const command = `'${PROXY_CONF_HELPER_PATH}' -m global -p ${port} -r ${port} -s 127.0.0.1`;
   enablePromise = exec(command);
-  return enablePromise;
+  return enablePromise.then(() => port);
 };
 
 const disableProxy = async () => {
