@@ -6,15 +6,16 @@ const { createWindow } = require('./lib/util');
 const { enableProxy, disableProxy } = require('./lib');
 const platform = require('os').platform();
 
-const js = fs.readFileSync(path.join(__dirname, './lib/inject.js')) + '';
+const js = fs.readFileSync(path.join(__dirname, './assets/inject.js')) + '';
+const css = fs.readFileSync(path.join(__dirname, './assets/inject.css')) + '';
 
 let win;
 const initWindow = () => {
   win = createWindow({
-    width: 960,
-    height: 580,
-    minWidth: 960,
-    minHeight: 580,
+    width: 550,
+    height: 380,
+    minWidth: 550,
+    minHeight: 380,
   });
   win.on('closed', () => win = null);
   enableProxy()
@@ -22,6 +23,7 @@ const initWindow = () => {
       win.loadURL(`http://127.0.0.1:${port}/whistle.proxy-settings/`);
       win.webContents.on('did-finish-load', () => {
         win.webContents.executeJavaScript(js);
+        win.webContents.insertCSS(css);
       });
     })
     .catch((e) => {

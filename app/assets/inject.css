@@ -1,0 +1,13 @@
+.proxy-url-container .proxy-url-input .ant-input {
+  width: 200px;
+}
+
+.proxy-url-container .proxy-url-label {
+  width: 120px;
+}
+
+.set-proxy-tips {
+  height: 190px;
+  overflow-y: scroll;
+  padding: 0 31px;
+}
