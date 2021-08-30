@@ -122,37 +122,7 @@ const makeInstanceCallback = () => {
   win.focus();
 };
 
-const initShortCut = () => {
-  const closeKey = platform === 'win32' ?
-    'Alt+F4' : 'CommandOrControl+W';
-  const template = [{
-    role: 'Window',
-    submenu: [
-      {
-        label: 'Close',
-        accelerator: closeKey,
-        click: () => {
-          const currentWindow = BrowserWindow.getFocusedWindow();
-          if (currentWindow) {
-            currentWindow.close();
-          }
-        },
-      },
-      {
-        label: 'Quit',
-        accelerator: 'CommandOrControl+Q',
-        click: () => {
-          app.quit();
-        },
-      },
-    ],
-  }];
-  Menu.setApplicationMenu(Menu.buildFromTemplate(template));
-  win.setAutoHideMenuBar(true);
-};
-
 const init = () => {
-  // Quit if app is not the only instance
   const gotTheLock = app.requestSingleInstanceLock()
   if (!gotTheLock) {
     app.quit()
@@ -170,7 +140,6 @@ const init = () => {
   app.on('ready', () => {
     initWindow();
     initTray();
-    initShortCut();
   });
   app.on('window-all-closed', () => {
     if (platform !== 'darwin') {
