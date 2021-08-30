@@ -1,8 +1,0 @@
-
-From: whistle@2.7.17
-Node: v12.8.1
-Date: 2021/8/25 下午6:25:23
-TypeError: ipcMain.send is not a function
-    at click (/Users/damonzfwang/github/client/app/main.js:44:15)
-    at MenuItem.click (electron/js2c/browser_init.js:1549:9)
-    at Function.executeCommand (electron/js2c/browser_init.js:1810:13)
