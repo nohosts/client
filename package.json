@@ -8,7 +8,8 @@
     "lintfix": "eslint --fix *.js app/*.js app/lib",
     "start": "cross-env NODE_ENV=development electron ./app",
     "pack:win": "electron-builder --win --x64",
-    "pack:mac": "electron-builder --mac "
+    "pack:mac": "electron-builder --mac",
+    "deps": "npm i && cd app && npm i"
   },
   "repository": {
     "type": "git",
@@ -27,7 +28,8 @@
     "electron": "^7.1.4",
     "electron-builder": "^22.2.0",
     "eslint": "^6.7.2",
-    "eslint-config-imweb": "^0.2.4"
+    "eslint-config-imweb": "^0.2.4",
+    "rimraf": "^3.0.2"
   },
   "build": {
     "appId": "nohost.client",
@@ -36,6 +38,9 @@
     "copyright": "IMWeb",
     "compression": "normal",
     "extends": null,
+    "publish": [
+      "github"
+    ],
     "mac": {
       "icon": "app/assets/nohost.png",
       "target": "dmg"
