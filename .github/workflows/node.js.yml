@@ -23,10 +23,7 @@ jobs:
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
     - name: 安装依赖
-      run: |
-        npm i
-        cd app
-        npm i
+      run: npm run deps
 
     - name: 构建window
       if: matrix.os == 'windows-2019'
