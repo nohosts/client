@@ -5,9 +5,8 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ feat/v2 ]
-  pull_request:
-    branches: [ master ]
+    tags:
+      - "v*.*.*"
 
 jobs:
   relaese:
