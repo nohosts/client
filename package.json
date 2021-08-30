@@ -42,11 +42,11 @@
       "github"
     ],
     "mac": {
-      "icon": "app/assets/nohost.png",
+      "icon": "app/assets/logo.png",
       "target": "dmg"
     },
     "win": {
-      "icon": "app/assets/nohost.png",
+      "icon": "app/assets/logo.png",
       "target": "nsis"
     },
     "nsis": {
