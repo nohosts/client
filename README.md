@@ -3,13 +3,7 @@ nohost pc 客户端，主要用来设置用户电脑代理，将用户系统代�
 
 主界面如图所示：
 
-![app](https://user-images.githubusercontent.com/4689952/69595898-c906c380-103b-11ea-91a0-27a65abef436.png)
-
-> 【重要提醒】本项目只是一个模板，不能直接使用，主要是方便大家快速开发本地连接 nohost 的 pc 客户端。
-
-通过下面指引，简单替换几处代码，即可生成windows客户端和mac客户端。
-
-pc客户端使用了 electron 技术，它允许使用Node.js（作为后端）和Chromium（作为前端）完成桌面GUI应用程序的开发。使用它，前端不需要了解过多的桌面技术，使用熟悉的前端技术栈即可开发出桌面应用。深入开发，可以详细了解一下[electron](https://github.com/electron/electron)知识。
+![app](./docs/client.png)
 
 
 # 项目目录结构
@@ -31,16 +25,14 @@ pc客户端使用了 electron 技术，它允许使用Node.js（作为后端）�
 
 # 开发
 
-1. 在app/package.json 添加whistle插件 进 dependencies(是在client/app目录进行install，不是在client这个根目录)，插件如何开发请看[访问 nohost 的 whistle 插件](https://github.com/nohosts/whistle.nohost-imweb)
-![插件位置](./docs/plugin-address.png)
-
-2. 修改app/index.html 中**选择环境**的链接 
-![选择环境链接](./docs/nohost-address.png)
-
-
 # 安装依赖
-项目初始，需要安装依赖
+项目初始，需要在两处安装依赖
 
+```sh
+# 根目录
+npm install
+```
+进入app目录下安装依赖
 ``` sh
 npm install
 ```
