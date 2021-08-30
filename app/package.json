@@ -5,7 +5,7 @@
   "main": "main.js",
   "repository": {
     "type": "git",
-    "url": "http://git.code.oa.com/nohost/client.git"
+    "url": "https://github.com/nohosts/client.git"
   },
   "author": "imweb",
   "license": "MIT",
