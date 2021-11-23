@@ -129,8 +129,6 @@ const macSetup = async () => {
   await installProxyHelper(port);
   await enableMacProxy(port);
   await new Promise((resolve) => {
-    // 打包之后，process.argv里面的参数不见了
-    process.argv[1] = process.argv[1] || './app';
     startWhistle({
       port,
       mode: 'pureProxy|multiEnv',
@@ -146,6 +144,8 @@ const init = async () => {
   if (proxyPort || initPromise) {
     return proxyPort || initPromise;
   }
+  // 打包之后，process.argv里面的参数不见了
+  process.argv[1] = process.argv[1] || './app';
   initPromise = isMacOs ? macSetup() : setup();
   return initPromise.catch((err) => {
     log.error('初始化失败', err);
