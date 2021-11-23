@@ -1,6 +1,6 @@
 {
   "name": "nohost",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "nohost的PC客户端，帮助PC用户设置nohost环境，安装后打开即可接入nohost",
   "main": "main.js",
   "repository": {
@@ -10,6 +10,7 @@
   "author": "imweb",
   "license": "MIT",
   "dependencies": {
+    "electron-log": "^4.4.1",
     "fix-path": "^3.0.0",
     "fs-extra-promise": "^1.0.1",
     "lan-settings": "^1.0.0-beta4",

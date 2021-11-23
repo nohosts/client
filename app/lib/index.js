@@ -3,6 +3,7 @@ const fs = require('fs-extra-promise');
 const lan = require('lan-settings');
 const startWhistle = require('whistle');
 const { getPort, isMacOs, exec } = require('./util');
+const log = require('electron-log');
 require('./polyfill');
 
 const PROXY_CONF_HELPER_PATH = path.join(__dirname, '../assets/proxy_conf_helper');
@@ -128,6 +129,8 @@ const macSetup = async () => {
   await installProxyHelper(port);
   await enableMacProxy(port);
   await new Promise((resolve) => {
+    // 打包之后，process.argv里面的参数不见了
+    process.argv[1] = process.argv[1] || './app';
     startWhistle({
       port,
       mode: 'pureProxy|multiEnv',
@@ -145,6 +148,7 @@ const init = async () => {
   }
   initPromise = isMacOs ? macSetup() : setup();
   return initPromise.catch((err) => {
+    log.error('初始化失败', err);
     initPromise = null;
     throw err;
   });
@@ -176,7 +180,9 @@ exports.proxyEnable = () => {
 };
 
 exports.enableProxy = () => {
+  log.info('开启代理', proxyPort);
   if (!proxyPort) {
+    log.info('初始化');
     return init();
   }
   return isMacOs ? enableMacProxy() : enableProxy();
