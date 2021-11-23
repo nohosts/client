@@ -20,7 +20,7 @@ const initWindow = () => {
   win.on('closed', () => win = null);
   enableProxy()
     .then((port) => {
-      win.loadURL(`http://127.0.0.1:${port}/whistle.proxy-settings/`);
+      win.loadURL(`http://localhost:${port}/whistle.proxy-settings/index.html`);
       win.webContents.on('did-finish-load', () => {
         win.webContents.executeJavaScript(js);
         win.webContents.insertCSS(css);
@@ -141,12 +141,9 @@ const init = () => {
     initWindow();
     initTray();
   });
-  app.on('window-all-closed', () => {
-    if (platform !== 'darwin') {
-      app.quit();
-    } else {
-      app.hide();
-    }
+  app.on('window-all-closed', async () => {
+    await disableProxy();
+    app.quit();
   });
   app.on('activate', () => {
     if (win === null) {
