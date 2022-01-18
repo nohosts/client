@@ -9,7 +9,7 @@
     "start": "cross-env NODE_ENV=development electron ./app",
     "pack:win": "electron-builder --win --x64",
     "pack:mac": "electron-builder --mac",
-    "deps": "npm i && cd app && npm i"
+    "deps": "npm i --force && cd app && npm i --force"
   },
   "repository": {
     "type": "git",
