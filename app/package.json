@@ -1,6 +1,6 @@
 {
   "name": "nohost",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "nohost的PC客户端，帮助PC用户设置nohost环境，安装后打开即可接入nohost",
   "main": "main.js",
   "repository": {
@@ -13,9 +13,9 @@
     "electron-log": "^4.4.1",
     "fix-path": "^3.0.0",
     "fs-extra-promise": "^1.0.1",
-    "lan-settings": "^1.0.0-beta4",
+    "lan-settings": "^1.0.0",
     "sudo-prompt": "^9.2.1",
-    "whistle": "^2.7.17",
+    "whistle": "^2.9.48",
     "whistle.proxy-settings": "0.0.10"
   },
   "optionalDependencies": {
