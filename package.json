@@ -23,12 +23,12 @@
   "author": "imweb",
   "license": "MIT",
   "devDependencies": {
-    "babel-eslint": "^7.1.1",
+    "babel-eslint": "10.0.3",
     "cross-env": "^6.0.3",
     "electron": "^7.1.4",
     "electron-builder": "^22.2.0",
-    "eslint": "^6.7.2",
-    "eslint-config-imweb": "^0.2.4",
+    "eslint": "^5.3.0",
+    "eslint-config-imweb": "^0.2.19",
     "rimraf": "^3.0.2"
   },
   "build": {
